@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Results Page</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<div class="container">
+			<h1>Results-Generated Numbers</h1>
+
+			<div id="resultsContainer"></div>
+
+			<div class="link-box" id="shareLink"></div>
+		</div>
+
+		<script type="module">
+			import { db } from "./firebase.js";
+
+			import {
+				doc,
+				getDoc,
+			} from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+
+			const params = new URLSearchParams(window.location.search);
+
+			const id = params.get("id");
+
+			const resultsContainer = document.getElementById("resultsContainer");
+
+			const shareLink = document.getElementById("shareLink");
+
+			async function fetchResult() {
+				try {
+					const docRef = doc(db, "randomResults", id);
+
+					const docSnap = await getDoc(docRef);
+
+					if (!docSnap.exists()) {
+						resultsContainer.innerHTML = "<h2>No result found</h2>";
+						return;
+					}
+
+					const data = docSnap.data();
+
+					const title = document.createElement("div");
+
+					title.innerHTML = `
+          <div class="result-card">
+            <h3>Collector: ${data.collectorName}</h3>
+            <p>Maximum Number: ${data.maxNumber}</p>
+          </div>
+        `;
+
+					resultsContainer.appendChild(title);
+
+					data.results.forEach((person) => {
+						const card = document.createElement("div");
+
+						card.classList.add("result-card");
+
+						card.innerHTML = `
+            <h3>${person.name}</h3>
+            <p>Random Number: ${person.number}</p>
+          `;
+
+						resultsContainer.appendChild(card);
+					});
+
+					shareLink.innerHTML = `
+          <strong>Share Link:</strong><br><br>
+          ${window.location.href}
+        `;
+				} catch (error) {
+					console.error(error);
+				}
+			}
+
+			fetchResult();
+		</script>
+	</body>
+</html>

@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Random Number Allocation</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<div class="container">
+			<h1>Fair System Number Allocation</h1>
+
+			<div class="form-group">
+				<label>Collector Name(Thrift)</label>
+				<input type="text" id="collectorName" />
+			</div>
+
+			<div class="form-group">
+				<label>Maximum Number</label>
+				<input type="number" id="maxNumber" />
+			</div>
+
+			<div class="participants-section">
+				<h2>Participants</h2>
+
+				<div id="participantsContainer">
+					<input
+						type="text"
+						class="participant-input"
+						placeholder="Enter participant name" />
+				</div>
+
+				<button id="addParticipantBtn">+ Add Person</button>
+			</div>
+
+			<button id="generateBtn" class="generate-btn">
+				Generate Random Numbers
+			</button>
+		</div>
+
+		<script type="module" src="app.js"></script>
+	</body>
+</html>

@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Random Counter · Unique Collector Draw</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: linear-gradient(145deg, #f0f7ff 0%, #e9eef5 100%);
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+        }
+
+        /* main card container */
+        .app-card {
+            max-width: 720px;
+            width: 100%;
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(0px);
+            border-radius: 2.5rem;
+            box-shadow: 0 25px 45px -12px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.05);
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+
+        .inner {
+            padding: 1.8rem 2rem 2.2rem;
+        }
+
+        h1 {
+            font-size: 1.9rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #1f2b3c, #2c3e66);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+            margin-bottom: 0.3rem;
+        }
+
+        .sub {
+            color: #4a5b6e;
+            border-left: 4px solid #3b82f6;
+            padding-left: 1rem;
+            margin-top: 0.2rem;
+            margin-bottom: 1.8rem;
+            font-weight: 450;
+            font-size: 0.9rem;
+        }
+
+        /* form groups */
+        .field-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #1e293b;
+            margin-bottom: 0.4rem;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            font-size: 1rem;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 1.2rem;
+            background: white;
+            transition: 0.2s;
+            font-family: inherit;
+            outline: none;
+            resize: vertical;
+        }
+
+        input:focus, textarea:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.2);
+        }
+
+        textarea {
+            min-height: 130px;
+            line-height: 1.5;
+        }
+
+        .helper {
+            font-size: 0.75rem;
+            color: #5b6e8c;
+            margin-top: 0.4rem;
+            margin-left: 0.5rem;
+        }
+
+        .button-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1.5rem 0 1.2rem;
+        }
+
+        button {
+            background: #1e293b;
+            border: none;
+            padding: 0.75rem 1.6rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        button.primary {
+            background: #3b82f6;
+            box-shadow: 0 8px 18px -8px #3b82f680;
+        }
+
+        button.primary:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+        }
+
+        button.secondary {
+            background: #475569;
+        }
+        button.secondary:hover {
+            background: #334155;
+        }
+        button.outline {
+            background: transparent;
+            border: 1.5px solid #cbd5e1;
+            color: #1f2b3c;
+            box-shadow: none;
+        }
+        button.outline:hover {
+            background: #f1f5f9;
+            border-color: #3b82f6;
+        }
+
+        /* result / table area */
+        .result-card {
+            background: #f8fafc;
+            border-radius: 1.5rem;
+            margin-top: 1.5rem;
+            padding: 1.2rem;
+            border: 1px solid #e9edf2;
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+            border-bottom: 1px dashed #cbd5e1;
+            padding-bottom: 0.6rem;
+        }
+
+        .badge {
+            background: #e6f0ff;
+            color: #1e4b8f;
+            padding: 0.2rem 0.8rem;
+            border-radius: 2rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .link-area {
+            margin-top: 1rem;
+            background: #ffffffdd;
+            padding: 0.5rem 0.8rem;
+            border-radius: 1rem;
+            font-size: 0.8rem;
+            word-break: break-all;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .link-area code {
+            background: #eef2ff;
+            padding: 0.3rem 0.6rem;
+            border-radius: 40px;
+            font-family: monospace;
+            font-size: 0.75rem;
+            flex: 1;
+            overflow-x: auto;
+        }
+        .copy-btn {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0 8px;
+            color: #3b82f6;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        th, td {
+            text-align: left;
+            padding: 0.65rem 0.3rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        th {
+            font-weight: 600;
+            color: #334155;
+        }
+        .random-number {
+            font-weight: 700;
+            font-family: monospace;
+            font-size: 1.1rem;
+            color: #0f3b6f;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: #5a6e8a;
+        }
+        .footer-note {
+            font-size: 0.7rem;
+            text-align: center;
+            margin-top: 1.2rem;
+            color: #6c7f9c;
+        }
+        @media (max-width: 550px) {
+            .inner { padding: 1.2rem; }
+            button { padding: 0.6rem 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="app-card" id="appRoot">
+    <div class="inner">
+        <h1>🎲 Random Counter</h1>
+        <div class="sub">Collector · People list · Unique & shareable results</div>
+
+        <!-- collector name input -->
+        <div class="field-group">
+            <label>📛 Collector name</label>
+            <input type="text" id="collectorName" placeholder="e.g., Maria, John, Team Alpha" autocomplete="off">
+        </div>
+
+        <!-- people list (one per line) -->
+        <div class="field-group">
+            <label>👥 List of people (one per line)</label>
+            <textarea id="peopleList" placeholder="Alice&#10;Bob&#10;Carlos&#10;Diana&#10;Elena"></textarea>
+            <div class="helper">Enter each person name on a new line. Order will be preserved.</div>
+        </div>
+
+        <div class="button-row">
+            <button id="generateBtn" class="primary">✨ Generate random numbers</button>
+            <button id="resetBtn" class="outline">🗑️ Reset form</button>
+        </div>
+
+        <!-- dynamic result panel (shows after generation or load) -->
+        <div id="resultPanel" class="result-card" style="display: none;">
+            <div class="result-header">
+                <span><strong>🎲 Random Counter Results</strong></span>
+                <span class="badge" id="maxCountDisplay">max: --</span>
+            </div>
+            <div id="peopleTableContainer">
+                <!-- table will be injected -->
+            </div>
+            <div id="uniqueLinkContainer" class="link-area">
+                <!-- dynamic link & copy -->
+            </div>
+            <div class="footer-note">
+                🔒 Each draw uses unique random seeds. Stored permanently with this link.
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function(){
+        // ---------- STORAGE KEY & HELPERS ----------
+        // We use localStorage to keep the mapping: shortId -> full data snapshot
+        // And we also keep current active session id for linking.
+
+        // Storage structure:
+        // "randcounter_sessions": { [sessionId]: { collector, peopleArray, numbersArray, createdAt, totalPeople } }
+        // Additionally we maintain "randcounter_currentId" to optionally restore last generated session on load? But better:
+        // On page load, check url hash OR query param ?id=xxx. 
+        // If id present and valid -> load that session and display (read-only mode but can regenerate new from same list? we'll allow regenerate fresh? Actually we want to preserve but user can still generate new numbers for same people? We'll implement: load session data into form fields, then if user clicks generate again it creates new session with fresh random numbers and stores new ID.
+        // This fits "unique link" behaviour: each stored snapshot has unique ID.
+
+        const STORAGE_KEY = "randcounter_sessions";
+        
+        // Helper: load all sessions
+        function loadSessions() {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if(!raw) return {};
+            try {
+                return JSON.parse(raw);
+            } catch(e) { return {}; }
+        }
+
+        function saveSessions(sessions) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions));
+        }
+
+        // generate a short unique id (8 chars alphanum, enough for demo)
+        function generateShortId() {
+            return Math.random().toString(36).substring(2, 10) + Date.now().toString(36);
+        }
+
+        // store a new session: collector, peopleArray (list of names), numbersArray (generated based on maxPeople)
+        // returns sessionId
+        function storeSession(collector, peopleArray, numbersArray) {
+            const sessions = loadSessions();
+            const sessionId = generateShortId();
+            const totalPeople = peopleArray.length;
+            sessions[sessionId] = {
+                collector: collector,
+                people: peopleArray,
+                numbers: numbersArray,
+                totalPeople: totalPeople,
+                createdAt: Date.now()
+            };
+            saveSessions(sessions);
+            return sessionId;
+        }
+
+        // update existing session (if needed, but we'll rather create new on regen)
+        // However we also want to allow "re-generation" based on same people list? new session new link.
+        
+        // get session by id
+        function getSession(id) {
+            const sessions = loadSessions();
+            return sessions[id] || null;
+        }
+
+        // generate random numbers for N people (max number = N, each gets 1..N unique? No spec says "random number for all of them based of the maximum number of people". 
+        // Interpretation: for each person we assign a random integer between 1 and totalPeople (inclusive). Could have duplicates unless unique required? The wording "random counter" often means each gets distinct random number like shuffle. But original: "We create random number for all of them based of the maximum number of people" — could be each gets random from 1 to max, may repeat. For clarity and fair distinct assignment (like drawing numbers) many users expect each person gets a unique random number (a permutation). We'll implement distinct random assignment (1..N shuffled) because it's classic "random counter" and more meaningful for drawing. 
+        // Implementation: generate array [1,2,...,total] then Fisher-Yates shuffle, then assign in same order as people list.
+        function generateDistinctRandomNumbers(totalPeople) {
+            if(totalPeople === 0) return [];
+            const arr = Array.from({length: totalPeople}, (_, i) => i+1);
+            // shuffle
+            for(let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        // render the result table + link + collector info
+        function renderResultPanel(collectorName, peopleArray, numbersArray, sessionId) {
+            const panel = document.getElementById('resultPanel');
+            const tableContainer = document.getElementById('peopleTableContainer');
+            const maxCountSpan = document.getElementById('maxCountDisplay');
+            const linkContainer = document.getElementById('uniqueLinkContainer');
+            
+            if(!peopleArray.length) {
+                tableContainer.innerHTML = '<div class="empty-state">⚠️ No people in list. Add at least one person.</div>';
+                maxCountSpan.innerText = 'max: 0';
+                linkContainer.innerHTML = '';
+                panel.style.display = 'block';
+                return;
+            }
+            
+            const maxNum = peopleArray.length;
+            maxCountSpan.innerText = `max: ${maxNum}  |  collector: ${escapeHtml(collectorName || '—')}`;
+            
+            // build table
+            let html = `<table>
+                        <thead>
+                            <tr><th>#</th><th>Person name</th><th>🎲 Random number</th></tr>
+                        </thead>
+                        <tbody>`;
+            for(let i=0; i<peopleArray.length; i++) {
+                const person = peopleArray[i];
+                const randVal = numbersArray[i];
+                html += `<tr>
+                            <td>${i+1}</td>
+                            <td>${escapeHtml(person)}</td>
+                            <td class="random-number">${randVal}</td>
+                         </tr>`;
+            }
+            html += `</tbody></table>`;
+            tableContainer.innerHTML = html;
+            
+            // build unique link (full url with query param id)
+            const baseUrl = window.location.href.split('?')[0].split('#')[0];
+            const uniqueUrl = `${baseUrl}?id=${sessionId}`;
+            linkContainer.innerHTML = `
+                <span style="font-weight:500;">🔗 Unique shareable link:</span>
+                <code id="shareLinkText">${escapeHtml(uniqueUrl)}</code>
+                <button class="copy-btn" id="copyLinkBtn" title="Copy link">📋</button>
+                <span style="font-size:0.7rem; color:#4b6a9b;">(store this link to access results later)</span>
+            `;
+            // attach copy event
+            const copyBtn = document.getElementById('copyLinkBtn');
+            if(copyBtn) {
+                copyBtn.addEventListener('click', () => {
+                    const linkCode = document.getElementById('shareLinkText');
+                    if(linkCode) {
+                        navigator.clipboard.writeText(uniqueUrl).then(() => {
+                            const originalText = copyBtn.innerText;
+                            copyBtn.innerText = '✓';
+                            setTimeout(() => { copyBtn.innerText = '📋'; }, 1500);
+                        }).catch(() => alert("Manual copy: " + uniqueUrl));
+                    }
+                });
+            }
+            panel.style.display = 'block';
+        }
+        
+        // simple escape against XSS
+        function escapeHtml(str) {
+            if(!str) return '';
+            return str.replace(/[&<>]/g, function(m) {
+                if(m === '&') return '&amp;';
+                if(m === '<') return '&lt;';
+                if(m === '>') return '&gt;';
+                return m;
+            }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+                return c;
+            });
+        }
+        
+        // main generation logic from current input fields
+        function generateFromCurrentInput() {
+            const collectorInput = document.getElementById('collectorName');
+            const peopleTextarea = document.getElementById('peopleList');
+            let collector = collectorInput.value.trim();
+            const rawPeople = peopleTextarea.value;
+            let peopleLines = rawPeople.split(/\r?\n/).filter(line => line.trim().length > 0);
+            // remove duplicates? we preserve order as given, but allow duplicates names? possible but okay
+            if(peopleLines.length === 0) {
+                alert("Please enter at least one person name.");
+                return null;
+            }
+            // clean each name (trim)
+            peopleLines = peopleLines.map(p => p.trim());
+            if(collector === "") collector = "Anonymous Collector";
+            
+            const total = peopleLines.length;
+            const randomNumbers = generateDistinctRandomNumbers(total);
+            // store session
+            const sessionId = storeSession(collector, peopleLines, randomNumbers);
+            // render result
+            renderResultPanel(collector, peopleLines, randomNumbers, sessionId);
+            
+            // optional: store current session id in url without reload? but we set url after generation to reflect shareability
+            // we will update browser history with new id (without full reload)
+            const newUrl = `${window.location.href.split('?')[0].split('#')[0]}?id=${sessionId}`;
+            window.history.pushState({}, '', newUrl);
+            return sessionId;
+        }
+        
+        // load session from id and populate form fields & results (display)
+        function loadSessionAndDisplay(sessionId) {
+            const session = getSession(sessionId);
+            if(!session) {
+                console.warn("Session not found", sessionId);
+                // fallback: hide panel or show error
+                const panel = document.getElementById('resultPanel');
+                const tableContainer = document.getElementById('peopleTableContainer');
+                if(panel) {
+                    tableContainer.innerHTML = '<div class="empty-state">❌ Invalid or expired session link. Please generate new random counter.</div>';
+                    document.getElementById('maxCountDisplay').innerText = 'max: --';
+                    const linkDiv = document.getElementById('uniqueLinkContainer');
+                    if(linkDiv) linkDiv.innerHTML = '';
+                    panel.style.display = 'block';
+                }
+                return false;
+            }
+            // populate form fields with session data
+            const collectorInput = document.getElementById('collectorName');
+            const peopleTextarea = document.getElementById('peopleList');
+            collectorInput.value = session.collector;
+            peopleTextarea.value = session.people.join('\n');
+            // render the same numbers from storage
+            renderResultPanel(session.collector, session.people, session.numbers, sessionId);
+            // also update URL to current id
+            const cleanUrl = window.location.href.split('?')[0].split('#')[0];
+            const newUrl = `${cleanUrl}?id=${sessionId}`;
+            window.history.replaceState({}, '', newUrl);
+            return true;
+        }
+        
+        // reset form and clear result panel (but doesn't delete stored sessions, just UI)
+        function resetForm() {
+            document.getElementById('collectorName').value = '';
+            document.getElementById('peopleList').value = '';
+            const panel = document.getElementById('resultPanel');
+            panel.style.display = 'none';
+            // optional: clear url id param but keep same page without id
+            const baseUrl = window.location.href.split('?')[0].split('#')[0];
+            window.history.replaceState({}, '', baseUrl);
+        }
+        
+        // on page load: check URL id parameter
+        function onPageLoad() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const sessionId = urlParams.get('id');
+            if(sessionId && sessionId.length > 0) {
+                const success = loadSessionAndDisplay(sessionId);
+                if(!success) {
+                    // show maybe fallback
+                    resetForm();
+                }
+            } else {
+                // nothing loaded, check if there's any default? maybe do nothing, panel hidden.
+                document.getElementById('resultPanel').style.display = 'none';
+            }
+            
+            // attach event listeners
+            const generateBtn = document.getElementById('generateBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            
+            generateBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                generateFromCurrentInput();
+            });
+            
+            resetBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                resetForm();
+            });
+            
+            // Optional: if someone manually modifies people list and wants to generate fresh, button works.
+        }
+        
+        // Expose for potential debugging no needed.
+        onPageLoad();
+    })();
+</script>
+</body>
+</html>
