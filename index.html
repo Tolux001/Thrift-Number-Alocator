@@ -103,7 +103,7 @@
 			}
 
 			.helper {
-				font-size: 0.75rem;
+				font-size: 1rem;
 				color: #5b6e8c;
 				margin-top: 0.4rem;
 				margin-left: 0.5rem;
@@ -279,13 +279,13 @@
 				<!-- people list (one per line) -->
 				<div class="field-group">
 					<label> List of people (one per line)</label>
+					<div class="helper">
+						Enter each person name on a new line. Order will be preserved.
+					</div>
 					<textarea
 						id="peopleList"
 						placeholder="Alice&#10;Bob&#10;Carlos&#10;Diana&#10;Elena"></textarea>
 					<div class="helper">
-						Enter each person name on a new line. Order will be preserved.
-					</div>
-					<div class="footer-note">
 						For offline user, results are stored in browser's localStorage.
 						Redirect to online storage so you can each share link corresponds of
 						a specific draw to everyone.
