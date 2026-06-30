@@ -4,13 +4,13 @@ import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.13.0/firebas
 import { getFirestore } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 
 const firebaseConfig = {
-	apiKey: "AIzaSyBBSG3GCHvEr9tusG-osjD7aa9341ecMAc",
-	authDomain: "tolux-storage.firebaseapp.com",
-	projectId: "tolux-storage",
-	storageBucket: "tolux-storage.firebasestorage.app",
-	messagingSenderId: "838395711516",
-	appId: "1:838395711516:web:3665d30921160a6c7b0fd9",
-	measurementId: "G-KY209M24VL",
+	apiKey: process.env.Next_apiKey,
+	authDomain: process.env.Next_authDomain,
+	projectId: process.env.Next_projectId,
+	storageBucket: process.env.Next_storageBucket,
+	messagingSenderId: process.env.Next_messagingSenderId,
+	appId: process.env.Next_appId,
+	measurementId: process.env.Next_measurementId,
 };
 
 const app = initializeApp(firebaseConfig);
